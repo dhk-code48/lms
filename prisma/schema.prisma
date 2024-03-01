@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  STUDENT
+  SUPERADMIN
+}
+
+model User {
+  id                 String    @id @default(cuid())
+  name               String?
+  email              String?   @unique
+  emailVerified      DateTime?
+  schoolId           String?
+  password           String?
+  role               UserRole  @default(STUDENT)
+  regestrationNumber String?
+  image              String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model School {
+  id      String   @id @default(uuid())
+  name    String
+  userId  String
+  books   Book[]   @relation("SchoolToBook")
+  authors Author[] @relation("SchoolToAuthor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Author {
+  id       String  @id @default(uuid())
+  name     String
+  books    Book[]  @relation("AuthorToBook")
+  imageUrl String?
+  schoolId String
+  school   School  @relation("SchoolToAuthor", fields: [schoolId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Book {
+  id           String   @id @default(uuid())
+  name         String
+  imageUrl     String
+  bannerUrl    String?
+  isPurchased  Boolean
+  pdfLink      String
+  guidePdfLink String
+  price        String
+  totalPages   String
+  schoolId     String
+  school       School   @relation("SchoolToBook", fields: [schoolId], references: [id])
+  authors      Author[] @relation("AuthorToBook")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([schoolId])
+}
