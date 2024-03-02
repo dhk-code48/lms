@@ -21,7 +21,10 @@ export const {
       }
 
       if (token.schoolId && session.user) {
-        session.user.schoolId = token.schoolId as String;
+        session.user.schoolId = token.schoolId as string;
+      }
+      if (token.categoryId && session.user) {
+        session.user.categoryId = token.categoryId as string;
       }
 
       return session;
@@ -35,6 +38,7 @@ export const {
 
       token.role = existingUser.role;
       token.schoolId = existingUser.schoolId;
+      token.categoryId = existingUser.categoryId;
 
       return token;
     },

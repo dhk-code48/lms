@@ -3,10 +3,7 @@ import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 import { auth } from "@/auth";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { bookId: string } }
-) {
+export async function GET(req: Request, { params }: { params: { bookId: string } }) {
   try {
     if (!params.bookId) {
       return new NextResponse("Book id is required", { status: 400 });
@@ -69,9 +66,14 @@ export async function PATCH(
       guidePdfLink,
       price,
       totalPages,
+      premiumLink,
+      categoryId,
       authors,
     }: {
       name: string;
+      categoryId: string;
+      premiumLink: string;
+
       imageUrl: string;
       isPurchased: boolean;
       pdfLink: string;
@@ -84,15 +86,7 @@ export async function PATCH(
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
-    if (
-      !name ||
-      !imageUrl ||
-      !pdfLink ||
-      !guidePdfLink ||
-      !price ||
-      !totalPages ||
-      !authors
-    ) {
+    if (!name || !imageUrl || !pdfLink || !guidePdfLink || !price || !totalPages || !authors) {
       return new NextResponse("All Fields are required", { status: 400 });
     }
 
@@ -107,6 +101,9 @@ export async function PATCH(
       data: {
         name,
         imageUrl,
+        premiumLink,
+
+        categoryId,
         isPurchased: isPurchased ? true : false,
         pdfLink,
         guidePdfLink,

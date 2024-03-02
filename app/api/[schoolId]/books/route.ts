@@ -4,10 +4,7 @@ import prismadb from "@/lib/prismadb";
 import { auth } from "@/auth";
 import { UserRole } from "@prisma/client";
 
-export async function POST(
-  req: Request,
-  { params }: { params: { schoolId: string } }
-) {
+export async function POST(req: Request, { params }: { params: { schoolId: string } }) {
   try {
     const session = await auth();
 
@@ -22,14 +19,18 @@ export async function POST(
       price,
       totalPages,
       authors,
+      premiumLink,
+      categoryId,
     }: {
       name: string;
+      categoryId: string;
       imageUrl: string;
       isPurchased: boolean;
       pdfLink: string;
       guidePdfLink: string;
       price: string;
       totalPages: string;
+      premiumLink: string;
       authors: string[];
     } = body;
 
@@ -37,16 +38,7 @@ export async function POST(
       return new NextResponse("Unauthenticated", { status: 403 });
     }
 
-    if (
-      !name ||
-      !imageUrl ||
-      !isPurchased ||
-      !pdfLink ||
-      !guidePdfLink ||
-      !price ||
-      !totalPages ||
-      !authors
-    ) {
+    if (!name || !imageUrl || !pdfLink || !guidePdfLink || !price || !totalPages || !authors) {
       return new NextResponse("All Fields are required", { status: 400 });
     }
 
@@ -57,8 +49,10 @@ export async function POST(
     const book = await prismadb.book.create({
       data: {
         name,
+        categoryId,
+        premiumLink,
         imageUrl,
-        isPurchased,
+        isPurchased: isPurchased ? isPurchased : false,
         pdfLink,
         guidePdfLink,
         price,
@@ -76,10 +70,7 @@ export async function POST(
   }
 }
 
-export async function GET(
-  req: Request,
-  { params }: { params: { schoolId: string } }
-) {
+export async function GET(req: Request, { params }: { params: { schoolId: string } }) {
   try {
     if (!params.schoolId) {
       return new NextResponse("Site id is required", { status: 400 });

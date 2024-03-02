@@ -1,0 +1,23 @@
+import { Button } from "@/components/ui/button";
+import { LogInIcon, User } from "lucide-react";
+import Link from "next/link";
+import React from "react";
+
+const NavbarAction = () => {
+  return (
+    <div className="flex items-center gap-x-3">
+      <Link href="/auth/login">
+        <Button className="gap-x-2" variant="ghost">
+          Login <LogInIcon size={16} />
+        </Button>
+      </Link>
+      <Link href="/loginRequests">
+        <Button className="gap-x-2">
+          Request Login <User size={16} />
+        </Button>
+      </Link>
+    </div>
+  );
+};
+
+export default NavbarAction;

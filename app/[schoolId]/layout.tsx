@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/app/[schoolId]/_components/navbar";
 import prismadb from "@/lib/prismadb";
 import { auth } from "@/auth";
-import { Sidebar } from "@/components/sidebar";
+import { Sidebar } from "@/app/[schoolId]/_components/sidebar";
+import BackButton from "@/components/back-button";
 
 export default async function DashboardLayout({
   children,
@@ -34,7 +35,8 @@ export default async function DashboardLayout({
         <Sidebar schoolId={params.schoolId} />
         <div className="flex flex-col">
           <Navbar />
-          <main className="h-full max-w-[calc(100vw-280px)] overflow-x-scroll">
+          <main className="h-full max-w-[calc(100vw-280px)] p-6 space-y-10">
+            <BackButton />
             {children}
           </main>
         </div>

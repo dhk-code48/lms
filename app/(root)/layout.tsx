@@ -2,23 +2,24 @@ import { redirect } from "next/navigation";
 
 import prismadb from "@/lib/prismadb";
 import { auth } from "@/auth";
+import { Navbar } from "./_components/navbar";
 
-export default async function SetupLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function SetupLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
-  if (!session) {
-    redirect("/auth/login");
+  const school = await prismadb.school.findFirst();
+
+  if (session) {
+    session.user.role === "TEACHER"
+      ? redirect(`/${session.user.schoolId}/teacher`)
+      : redirect(`/${school?.id}/superadmin`);
   }
 
-  // const school = await prismadb.school.findFirst({
-  //   where: {
-  //     name: "GBS",
-  //   },
-  // });
+  return (
+    <div>
+      <Navbar className="h-20" />
 
-  return <>{children}</>;
+      <main className="min-h-screen pt-20"> {children}</main>
+    </div>
+  );
 }
