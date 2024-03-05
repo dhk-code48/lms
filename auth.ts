@@ -38,7 +38,7 @@ export const {
 
       token.role = existingUser.role;
       token.schoolId = existingUser.schoolId;
-      token.categoryId = existingUser.categoryId;
+      token.categoryId = existingUser.categories;
 
       return token;
     },
