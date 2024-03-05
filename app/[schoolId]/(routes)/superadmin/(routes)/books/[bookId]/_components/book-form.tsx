@@ -61,7 +61,11 @@ interface BookFormProps {
   categories: Category[] | null;
 }
 
-export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, categories }) => {
+export const BookForm: React.FC<BookFormProps> = ({
+  initialData,
+  authors,
+  categories,
+}) => {
   const params = useParams();
   const router = useRouter();
 
@@ -95,7 +99,10 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.schoolId}/books/${params.bookId}`, data);
+        await axios.patch(
+          `/api/${params.schoolId}/books/${params.bookId}`,
+          data
+        );
       } else {
         await axios.post(`/api/${params.schoolId}/books`, data);
       }
@@ -122,8 +129,12 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
     }
   };
 
-  const [authorOptions, setAuthorOptions] = useState<{ label: string; value: string }[]>([]);
-  const [defaultOptions, setDefaultOptions] = useState<{ label: string; value: string }[]>([]);
+  const [authorOptions, setAuthorOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [defaultOptions, setDefaultOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
 
   const { resolvedTheme } = useTheme();
 
@@ -131,14 +142,19 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
     setAuthorOptions([]);
     authors &&
       authors.map((author) => {
-        setAuthorOptions((prev) => [...prev, { label: author.name, value: author.id }]);
+        setAuthorOptions((prev) => [
+          ...prev,
+          { label: author.name, value: author.id },
+        ]);
       });
   }, [authors]);
 
   useEffect(() => {
-    const authorIds = initialData ? initialData.authors.map((author) => author.id) : [""];
+    const authorIds = initialData
+      ? initialData.authors.map((author) => author.id)
+      : [""];
     form.setValue("authors", authorIds);
-  }, [initialData]);
+  }, [form, initialData]);
 
   useEffect(() => {
     console.log("DEFAULT OPTION => ", defaultOptions);
@@ -155,14 +171,22 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialData && (
-          <Button disabled={loading} variant="destructive" size="sm" onClick={() => setOpen(true)}>
+          <Button
+            disabled={loading}
+            variant="destructive"
+            size="sm"
+            onClick={() => setOpen(true)}
+          >
             <Trash className="h-4 w-4" />
           </Button>
         )}
       </div>
       <Separator />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 w-full"
+        >
           <FormField
             control={form.control}
             name="imageUrl"
@@ -189,7 +213,11 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Book name" {...field} />
+                    <Input
+                      disabled={loading}
+                      placeholder="Book name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -202,7 +230,12 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                 <FormItem>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="9.99" {...field} />
+                    <Input
+                      type="text"
+                      disabled={loading}
+                      placeholder="9.99"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -216,7 +249,12 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                 <FormItem>
                   <FormLabel>Total Pages</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="645" {...field} />
+                    <Input
+                      type="text"
+                      disabled={loading}
+                      placeholder="645"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -230,7 +268,12 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                 <FormItem>
                   <FormLabel>Guide Pdf Link</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="https://" {...field} />
+                    <Input
+                      type="text"
+                      disabled={loading}
+                      placeholder="https://"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -244,7 +287,12 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                 <FormItem>
                   <FormLabel>Pdf Link</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="https://" {...field} />
+                    <Input
+                      type="text"
+                      disabled={loading}
+                      placeholder="https://"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -257,7 +305,12 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                 <FormItem>
                   <FormLabel>Premium Link</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="https://" {...field} />
+                    <Input
+                      type="text"
+                      disabled={loading}
+                      placeholder="https://"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -277,7 +330,10 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                         borderRadius: 0,
                         colors: {
                           ...theme.colors,
-                          neutral0: resolvedTheme === "dark" ? "black" : theme.colors.neutral0,
+                          neutral0:
+                            resolvedTheme === "dark"
+                              ? "black"
+                              : theme.colors.neutral0,
                           primary25: "gray",
                           primary: "black",
                         },
@@ -288,7 +344,9 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                       }))}
                       options={authorOptions}
                       isMulti
-                      onChange={(e) => form.setValue("authors", [...e.map((p) => p.value)])}
+                      onChange={(e) =>
+                        form.setValue("authors", [...e.map((p) => p.value)])
+                      }
                     />
                   </FormControl>
                 </FormItem>
@@ -300,7 +358,10 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a Category" />
@@ -329,7 +390,9 @@ export const BookForm: React.FC<BookFormProps> = ({ initialData, authors, catego
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      defaultChecked={initialData ? initialData.isPurchased : false}
+                      defaultChecked={
+                        initialData ? initialData.isPurchased : false
+                      }
                     />
                   </FormControl>
                   <FormMessage />

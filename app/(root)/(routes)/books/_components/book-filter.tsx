@@ -25,7 +25,9 @@ const BookFilter: FC<{ categories: Category[] }> = ({ categories }) => {
             <SelectLabel>Subjects</SelectLabel>
             {categories &&
               categories.map((category) => (
-                <SelectItem value={category.id}>{category.name}</SelectItem>
+                <SelectItem key={category.id + " category"} value={category.id}>
+                  {category.name}
+                </SelectItem>
               ))}
           </SelectGroup>
         </SelectContent>

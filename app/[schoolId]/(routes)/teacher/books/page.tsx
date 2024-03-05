@@ -6,7 +6,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { FC } from "react";
 
-const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({ params }) => {
+const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({
+  params,
+}) => {
   const session = await auth();
 
   if (!session) {
@@ -26,11 +28,17 @@ const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({ params }) =>
 
   return (
     <div className="space-y-10">
-      <Heading title="Purchased Books" description="Purchased books with answer key and pdf" />
+      <Heading
+        title="Purchased Books"
+        description="Purchased books with answer key and pdf"
+      />
       <div className="flex gap-10 flex-wrap">
         {books &&
           books.map((book) => (
-            <Link href={`/${params.schoolId}/teacher/books/${book.id}`}>
+            <Link
+              key={book.id + " books"}
+              href={`/${params.schoolId}/teacher/books/${book.id}`}
+            >
               <BookCard book={book} />
             </Link>
           ))}
