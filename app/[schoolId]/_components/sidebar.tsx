@@ -21,7 +21,7 @@ export const Sidebar: FC<{ schoolId: string }> = ({ schoolId }) => {
         <div className="flex h-[60px] items-center border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" href="#">
             <Package2Icon className="h-6 w-6" />
-            <p>Acme Inc</p>
+            <p>Swarnim</p>
           </Link>
         </div>
         <div className="flex-1 overflow-auto py-2">
