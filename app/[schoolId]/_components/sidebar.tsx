@@ -1,32 +1,21 @@
-import {
-  AwardIcon,
-  BellIcon,
-  BookIcon,
-  CalendarIcon,
-  ClipboardIcon,
-  HomeIcon,
-  MessageSquareIcon,
-  Package2Icon,
-  UsersIcon,
-} from "lucide-react";
+import { Package2Icon } from "lucide-react";
 import { SidebarRoutes } from "./sidebar-routes";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FC } from "react";
 
-export const Sidebar: FC<{ schoolId: string }> = ({ schoolId }) => {
+export const Sidebar: FC = () => {
   return (
-    <div className="hidden  w-[250px] border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
+    <div className="w-[250px] border-r bg-gray-100/40 h-screen dark:bg-gray-800/40">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-[60px] items-center border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" href="#">
             <Package2Icon className="h-6 w-6" />
-            <p>Acme Inc</p>
+            <p>Swarnim Publication</p>
           </Link>
         </div>
         <div className="flex-1 overflow-auto py-2">
           <nav className="grid items-start px-4 text-sm font-medium">
-            <SidebarRoutes schoolId={schoolId} />
+            <SidebarRoutes />
           </nav>
         </div>
         {/* <div className="mt-auto p-4">

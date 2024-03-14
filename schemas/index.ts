@@ -8,11 +8,6 @@ export const LoginSchema = z.object({
   }),
   code: z.optional(z.string()),
 });
-
-export const GradeSchema = z.object({
+export const SchoolSchema = z.object({
   name: z.string().min(1),
-});
-export const ChapterSchema = z.object({
-  name: z.string().min(1),
-  sectionId: z.string().min(1),
 });

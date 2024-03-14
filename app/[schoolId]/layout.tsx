@@ -32,10 +32,12 @@ export default async function DashboardLayout({
   return (
     <>
       <div className="grid min-h-screen w-full lg:grid-cols-[250px_1fr]">
-        <Sidebar schoolId={params.schoolId} />
+        <div className="hidden lg:block">
+          <Sidebar />
+        </div>
         <div className="flex flex-col">
           <Navbar />
-          <main className="h-full max-w-[calc(100vw-280px)] p-6 space-y-10">
+          <main className="h-full lg:max-w-[calc(100vw-280px)] p-3 lg:p-6 space-y-10">
             <BackButton />
             {children}
           </main>

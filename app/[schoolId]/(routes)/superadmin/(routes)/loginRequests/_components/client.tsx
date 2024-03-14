@@ -14,7 +14,7 @@ interface CategoriesClientProps {
   data: CategoryColumn[];
 }
 
-export const CategoriesClient: React.FC<CategoriesClientProps> = ({ data }) => {
+export const LoginRequestsClient: React.FC<CategoriesClientProps> = ({ data }) => {
   return (
     <>
       <div className="flex items-center justify-between">

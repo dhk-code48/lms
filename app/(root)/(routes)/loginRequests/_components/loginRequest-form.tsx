@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
-import { AlertModal } from "@/components/alert-modal";
+import { AlertModal } from "@/components/modals/alert-modal";
 import MultiSelect from "react-select";
 
 import ImageUpload from "@/components/ui/image-upload";

@@ -12,11 +12,18 @@ import {
 import { Category } from "@prisma/client";
 import React, { FC } from "react";
 
-const BookFilter: FC<{ categories: Category[] }> = ({ categories }) => {
+const BookFilter: FC<{
+  categories: Category[];
+  handleBookNameChange: (value: string) => void;
+  handleCategoryChange: (value: string) => void;
+}> = ({ handleBookNameChange, categories, handleCategoryChange }) => {
   return (
     <div className="flex items-center gap-x-3">
-      <Input placeholder="Search Books ..." />
-      <Select>
+      <Input
+        placeholder="Search Books ..."
+        onChange={(e) => handleBookNameChange(e.target.value)}
+      />
+      <Select onValueChange={handleCategoryChange}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Sort By Subject" />
         </SelectTrigger>
@@ -24,8 +31,10 @@ const BookFilter: FC<{ categories: Category[] }> = ({ categories }) => {
           <SelectGroup>
             <SelectLabel>Subjects</SelectLabel>
             {categories &&
-              categories.map((category) => (
-                <SelectItem value={category.id}>{category.name}</SelectItem>
+              categories.map((category, i) => (
+                <SelectItem key={category.id + i} value={category.id}>
+                  {category.name}
+                </SelectItem>
               ))}
           </SelectGroup>
         </SelectContent>

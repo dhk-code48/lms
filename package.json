@@ -36,16 +36,19 @@
     "next-auth": "^5.0.0-beta.4",
     "next-cloudinary": "^6.0.1",
     "next-themes": "^0.2.1",
+    "nivo": "^0.31.0",
     "pdfjs-dist": "^4.0.379",
     "pdfkit": "^0.14.0",
     "react": "^18",
+    "react-cookie": "^7.1.0",
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
     "react-hot-toast": "^2.4.1",
     "react-select": "^5.8.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

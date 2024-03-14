@@ -13,61 +13,62 @@ import {
   User,
   Users2,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 import { SidebarItem } from "./sidebar-item";
 import { FC } from "react";
 
-export const SidebarRoutes: FC<{ schoolId: string }> = ({ schoolId }) => {
+export const SidebarRoutes: FC = () => {
+  const params = useParams();
   const guestRoutes = [
     {
       icon: Gem,
       label: "Premium Books",
-      href: `/${schoolId}/teacher/books`,
+      href: `/${params.schoolId}/teacher/books`,
     },
     {
       icon: BookA,
       label: "All Books",
-      href: `/${schoolId}/teacher/allBooks`,
+      href: `/${params.schoolId}/teacher/allBooks`,
     },
   ];
 
   const superAdminRoutes = [
     {
       icon: Layout,
-      href: `/${schoolId}/superadmin`,
+      href: `/${params.schoolId}/superadmin`,
       label: "Dashboard",
     },
     {
       icon: Book,
-      href: `/${schoolId}/superadmin/books`,
+      href: `/${params.schoolId}/superadmin/books`,
       label: "Books",
     },
     {
       icon: User,
-      href: `/${schoolId}/superadmin/authors`,
+      href: `/${params.schoolId}/superadmin/authors`,
       label: "Authors",
     },
     {
       icon: Notebook,
-      href: `/${schoolId}/superadmin/categories`,
+      href: `/${params.schoolId}/superadmin/categories`,
       label: "Category",
     },
     {
       icon: LogInIcon,
-      href: `/${schoolId}/superadmin/loginRequests`,
+      href: `/${params.schoolId}/superadmin/loginRequests`,
       label: "Login Requests",
     },
     {
       icon: Users2,
       label: "Teachers",
-      href: `/${schoolId}/superadmin/teachers`,
+      href: `/${params.schoolId}/superadmin/teachers`,
     },
   ];
 
   const pathname = usePathname();
 
-  const isTeacher = pathname?.includes("/teacher");
+  const isTeacher = pathname?.includes("/teacher") && !pathname?.includes("/teachers");
 
   const routes = isTeacher ? guestRoutes : superAdminRoutes;
 

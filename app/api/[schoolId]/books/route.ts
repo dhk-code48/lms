@@ -70,17 +70,31 @@ export async function POST(req: Request, { params }: { params: { schoolId: strin
   }
 }
 
-export async function GET(req: Request, { params }: { params: { schoolId: string } }) {
+// Assuming this is in route.ts/api
+
+export async function GET(
+  req: Request,
+  { params, query }: { params: { schoolId: string }; query: { page: number; limit: number } }
+) {
   try {
     if (!params.schoolId) {
       return new NextResponse("Site id is required", { status: 400 });
     }
 
+    const page = query.page || 1;
+    const limit = query.limit || 10;
+
+    console.log("SCHOOL ID => ", params.schoolId);
+
     const books = await prismadb.book.findMany({
       where: {
         schoolId: params.schoolId,
       },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+
+    console.log(books);
 
     return NextResponse.json(books);
   } catch (error) {

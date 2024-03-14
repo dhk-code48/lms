@@ -13,20 +13,28 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import BookCard from "@/components/book-card";
+import Link from "next/link";
 
 const HomeBooks = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [booksPerPage] = useState(10);
+  const [booksPerPage] = useState(5);
   const [totalBooks, setTotalBooks] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState("Computer");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [bookName, setBookName] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
       console.log("HELLO => ");
       const categoriesData = await fetchCategories();
-      const { books, pagination } = await fetchBooks(currentPage, booksPerPage, selectedCategory);
+      const { books, pagination } = await fetchBooks(
+        currentPage,
+        booksPerPage,
+        selectedCategory,
+        bookName
+      );
 
       setCategories(categoriesData);
       setBooks(books);
@@ -34,16 +42,15 @@ const HomeBooks = () => {
     };
 
     fetchAll();
-  }, [currentPage, booksPerPage, selectedCategory]);
+  }, [currentPage, bookName, booksPerPage, selectedCategory]);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(1); // Reset to first page when category changes
   };
-
-  useEffect(() => {
-    console.log("BOOKS => ", books);
-  }, [books]);
+  const handleBookNameChange = (value: string) => {
+    setBookName(value);
+  };
 
   // Pagination Controls
   const totalPages = Math.ceil(totalBooks / booksPerPage);
@@ -51,15 +58,18 @@ const HomeBooks = () => {
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   return (
-    <div className="container mt-10">
-      <BookFilter categories={categories} />
-      <div className="books-list">
+    <div className="container mt-10 space-y-10">
+      <BookFilter
+        handleBookNameChange={handleBookNameChange}
+        handleCategoryChange={handleCategoryChange}
+        categories={categories}
+      />
+      <div className="flex flex-wrap gap-10 items-center lg:justify-start justify-center">
         {books &&
           books.map((book) => (
-            <div key={book.id} className="book">
-              <h3>{book.name}</h3>
-              <p>{book.price}</p>
-            </div>
+            <Link href={"/books/" + book.id} key={book.id + "bookfilter"}>
+              <BookCard book={book} />
+            </Link>
           ))}
       </div>
       <Pagination>

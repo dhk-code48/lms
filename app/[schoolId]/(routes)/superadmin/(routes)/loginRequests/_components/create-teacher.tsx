@@ -2,8 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Category } from "@prisma/client";
 import axios from "axios";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useTransition } from "react";
 import { toast } from "react-hot-toast";
+import bcrypt from "bcryptjs";
+import { createTeacher } from "@/actions/createTeacher";
 
 const CreateTeacher: FC<{
   email: string;
@@ -12,37 +14,29 @@ const CreateTeacher: FC<{
   schoolId: string;
   address: string;
 }> = ({ name, categories, email, schoolId, address }) => {
-  const toastMessage = "Teacher created.";
+  const [isPending, startTransition] = useTransition();
 
-  const [loading, setLoading] = useState(false);
+  const onSubmit = () => {
+    const formatedCat = categories.map((cat) => cat.id);
 
-  const onSubmit = async () => {
-    const formattedCategories = categories.map((category) => category.id); // Removed unnecessary spread operator
-    const data = new FormData();
-    data.append("email", email);
-    data.append("name", name);
-    data.append("password", address);
-    data.append("categories", JSON.stringify(formattedCategories));
+    startTransition(() => {
+      createTeacher({ categories: formatedCat, email, name, password: email, schoolId })
+        .then((data) => {
+          if (data?.error) {
+            toast.error(data.error);
+          }
+          if (data?.success) {
+            toast.success(data.success);
 
-    try {
-      setLoading(true);
-      const response = await axios.post(`/api/${schoolId}/teacher`, data);
-
-      if (response.status === 200) {
-        toast.success(toastMessage);
-        window.location.assign(`/${schoolId}/loginRequests`);
-      } else {
-        toast.error("Something went wrong.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
+            window.location.assign(window.location.pathname);
+          }
+        })
+        .catch(() => toast.error("Something went wrong."));
+    });
   };
+
   return (
-    <Button onClick={() => onSubmit()} disabled={loading}>
+    <Button onClick={() => onSubmit()} disabled={isPending}>
       Add User
     </Button>
   );

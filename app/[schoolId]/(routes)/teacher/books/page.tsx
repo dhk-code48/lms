@@ -19,15 +19,15 @@ const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({ params }) =>
   const books = await prismadb.book.findMany({
     where: {
       schoolId: params.schoolId,
-      categoryId: session.user.categoryId,
+      categoryId: { in: session.user.categories },
       isPurchased: true,
     },
   });
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 w-full">
       <Heading title="Purchased Books" description="Purchased books with answer key and pdf" />
-      <div className="flex gap-10 flex-wrap">
+      <div className="flex gap-10 w-full justify-center flex-wrap items-center">
         {books &&
           books.map((book) => (
             <Link href={`/${params.schoolId}/teacher/books/${book.id}`}>

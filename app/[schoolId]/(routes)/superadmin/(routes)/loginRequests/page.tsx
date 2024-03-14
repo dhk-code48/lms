@@ -4,7 +4,7 @@ import moment from "moment";
 import prismadb from "@/lib/prismadb";
 
 import { CategoryColumn } from "./_components/columns";
-import { CategoriesClient } from "./_components/client";
+import { LoginRequestsClient } from "./_components/client";
 
 const CategoriesPage = async ({ params }: { params: { schoolId: string } }) => {
   const loginRequests = await prismadb.loginRequest.findMany({
@@ -34,7 +34,7 @@ const CategoriesPage = async ({ params }: { params: { schoolId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <CategoriesClient data={formattedCategories} />
+        <LoginRequestsClient data={formattedCategories} />
       </div>
     </div>
   );

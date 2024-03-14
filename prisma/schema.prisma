@@ -30,6 +30,7 @@ model User {
   role               UserRole  @default(TEACHER)
   regestrationNumber String?
   image              String?
+  loginDevice        String? 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

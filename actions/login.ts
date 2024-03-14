@@ -1,28 +1,45 @@
 "use server";
-
+// login.ts
 import { LoginSchema } from "@/schemas";
 import { signIn } from "@/auth";
 import * as z from "zod";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
+import bcrypt from "bcryptjs";
+import { updateTeacher } from "./updateTeacher";
+import prismadb from "@/lib/prismadb";
 
-export const login = async (
-  values: z.infer<typeof LoginSchema>,
-  callbackUrl?: string | null
-) => {
+export const login = async (values: z.infer<typeof LoginSchema>, loginDevice?: string | null) => {
   const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
-    return { error: "Invalidate Data" };
+    return { error: "Invalid Data" };
   }
 
   const { email, password } = validatedFields.data;
+  const userByEmail = await prismadb.user.findFirst({ where: { email } });
 
   try {
-    await signIn("credentials", {
-      email,
-      password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
-    });
+    if (userByEmail) {
+      if (userByEmail.role === "TEACHER") {
+        if (userByEmail.loginDevice) {
+          if (userByEmail.loginDevice !== loginDevice) {
+            return { error: "Can't login on multiple devices" };
+          }
+        } else {
+          await updateTeacher({ id: userByEmail.id });
+        }
+      }
+
+      await signIn("credentials", {
+        email,
+        password,
+        redirectTo: DEFAULT_LOGIN_REDIRECT,
+      });
+
+      return { success: "Login Success", update: userByEmail.id };
+    } else {
+      return { error: "User not found" };
+    }
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -35,6 +52,4 @@ export const login = async (
 
     throw error;
   }
-
-  return { success: "Login Success" };
 };

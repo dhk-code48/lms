@@ -1,3 +1,4 @@
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { LogInIcon, User } from "lucide-react";
 import Link from "next/link";
@@ -6,6 +7,7 @@ import React from "react";
 const NavbarAction = () => {
   return (
     <div className="flex items-center gap-x-3">
+      <ThemeToggle />
       <Link href="/auth/login">
         <Button className="gap-x-2" variant="ghost">
           Login <LogInIcon size={16} />
