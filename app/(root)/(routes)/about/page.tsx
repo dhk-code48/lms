@@ -22,7 +22,7 @@ const HomeAbout = async () => {
                 books that complement the curriculum and inspire academic excellence.
               </p>
             </div>
-            <img
+            <Image
               alt="About"
               className="mx-auto rounded-lg object-cover"
               height="400"
