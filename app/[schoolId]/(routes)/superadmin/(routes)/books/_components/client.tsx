@@ -21,7 +21,7 @@ export const BooksClient: React.FC<BooksClientProps> = ({ data }) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`Books (${data.length})`} description="Manage books for your store" />
+        <Heading title={`Books (${data.length})`} description="Manage books for your school" />
         <Button onClick={() => router.push(`/${params.schoolId}/superadmin/books/new`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>

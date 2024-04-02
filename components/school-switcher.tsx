@@ -93,7 +93,7 @@ export default function SchoolSwitcher({ className, items = [] }: StoreSwitcherP
                 }}
               >
                 <PlusCircle className="mr-2 h-5 w-5" />
-                Create Store
+                Create School
               </CommandItem>
             </CommandGroup>
           </CommandList>
