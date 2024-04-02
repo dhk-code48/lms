@@ -9,7 +9,7 @@ import bcrypt from "bcryptjs";
 import { updateTeacher } from "./updateTeacher";
 import prismadb from "@/lib/prismadb";
 
-export const login = async (values: z.infer<typeof LoginSchema>, loginDevice?: string | null) => {
+export const login = async (values: z.infer<typeof LoginSchema>, loginDevice: string) => {
   const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Invalid Data" };
@@ -19,24 +19,41 @@ export const login = async (values: z.infer<typeof LoginSchema>, loginDevice?: s
   const userByEmail = await prismadb.user.findFirst({ where: { email } });
 
   try {
-    if (userByEmail) {
-      if (userByEmail.role === "TEACHER") {
-        if (userByEmail.loginDevice) {
-          if (userByEmail.loginDevice !== loginDevice) {
-            return { error: "Can't login on multiple devices" };
+    if (userByEmail && userByEmail.password) {
+      const correctPass = await bcrypt.compare(values.password, userByEmail.password);
+      if (correctPass) {
+        if (userByEmail.role === "TEACHER") {
+          if (userByEmail.loginDevice) {
+            if (userByEmail.loginDevice === loginDevice) {
+              await signIn("credentials", {
+                email,
+                password,
+                redirectTo: DEFAULT_LOGIN_REDIRECT,
+              });
+              return { success: "Login Success" };
+            } else {
+              return { error: "Cann't Login In Multiple Devices" };
+            }
+          } else {
+            await updateTeacher({ id: userByEmail.id, loginDevice });
+            await signIn("credentials", {
+              email,
+              password,
+              redirectTo: DEFAULT_LOGIN_REDIRECT,
+            });
+            return { success: "Login Success" };
           }
         } else {
-          await updateTeacher({ id: userByEmail.id });
+          await signIn("credentials", {
+            email,
+            password,
+            redirectTo: DEFAULT_LOGIN_REDIRECT,
+          });
+          return { success: "Login Success" };
         }
+      } else {
+        return { error: "Invalid Credentials" };
       }
-
-      await signIn("credentials", {
-        email,
-        password,
-        redirectTo: DEFAULT_LOGIN_REDIRECT,
-      });
-
-      return { success: "Login Success", update: userByEmail.id };
     } else {
       return { error: "User not found" };
     }

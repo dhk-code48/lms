@@ -2,6 +2,7 @@ import { getInfo } from "@/actions/about";
 import AboutStats from "@/components/about-stats";
 import ContactUsSection from "@/components/contact-us-section";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import Image from "next/image";
 import React from "react";
 
 const HomeAbout = async () => {
@@ -45,7 +46,7 @@ const HomeAbout = async () => {
       <div className="py-12 lg:py-16">
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-4 lg:grid-cols-2 lg:gap-8">
-            <img
+            <Image
               alt="Education"
               className="mx-auto rounded-lg object-cover"
               height="400"

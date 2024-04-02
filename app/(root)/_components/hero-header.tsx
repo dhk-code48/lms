@@ -9,8 +9,8 @@ export const Header = () => {
       </h1>
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
         Unlock your academic potential with PageTurners Publishing, the leading source for
-        comprehensive and insightful textbooks tailored to your course needs. We empower students'
-        journeys towards success with resources designed to illuminate and inspire.
+        comprehensive and insightful textbooks tailored to your course needs. We empower
+        students&apos;s journeys towards success with resources designed to illuminate and inspire.
       </p>
     </div>
   );

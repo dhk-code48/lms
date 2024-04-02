@@ -5,7 +5,7 @@ import React, { useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-
+import { v4 as uuid } from "uuid";
 import { redirect, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -24,13 +24,13 @@ import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 import { useCookies } from "react-cookie";
 import { getUserByEmail } from "@/actions/user";
+import prismadb from "@/lib/prismadb";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const LoginForm = ({ className, ...props }: UserAuthFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -41,27 +41,38 @@ const LoginForm = ({ className, ...props }: UserAuthFormProps) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    const loginDevice = window.localStorage.getItem("loginDevice");
+  // const [setLocalStore, setLocalStoreState] = useState<boolean | string>(false);
+
+  const [uniqueLoginId, setUniqueLoginId] = useState<string>("");
+
+  const randomUid = uuid();
+
+  useEffect(() => {
+    const localUniqueLoginId = window.localStorage.getItem("loginDevice");
+    if (localUniqueLoginId) {
+      setUniqueLoginId(localUniqueLoginId);
+    } else {
+      window.localStorage.setItem("loginDevice", randomUid);
+      setUniqueLoginId(randomUid);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(setLocalStore);
+  //   setLocalStore && window.localStorage.setItem("loginDevice", "true");
+  // }, [setLocalStore]);
+
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values, loginDevice)
+      login(values, uniqueLoginId)
         .then((data) => {
           if (data?.error) {
             form.reset();
             setError(data.error);
           }
           if (data?.success) {
-            console.log("Update value:", data.update); // Log the update value
-            if (data.update) {
-              try {
-                window.localStorage.setItem("loginDevice", data.update);
-                console.log("Login device set successfully."); // Log success message
-              } catch (error) {
-                console.error("Error setting login device:", error); // Log any error during set operation
-              }
-            }
             form.reset();
             setSuccess(data.success);
           }

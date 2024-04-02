@@ -24,7 +24,10 @@ const BookInfo: FC<{ book: Book & { authors: Author[]; category: Category } }> =
           <div className="space-y-2">
             {book.authors.map((author) => {
               return (
-                <div className="flex items-center gap-2 pr-5 w-fit bg-muted rounded-full">
+                <div
+                  key={"book_info " + author.id}
+                  className="flex items-center gap-2 pr-5 w-fit bg-muted rounded-full"
+                >
                   <Image
                     src={author.imageUrl || "/gbs.png"}
                     width={50}

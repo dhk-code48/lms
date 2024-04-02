@@ -24,7 +24,7 @@ export const {
         session.user.schoolId = token.schoolId as string;
       }
       if (token.categories && session.user) {
-        session.user.categories = token.categories as string;
+        session.user.categories = token.categories as string[];
       }
 
       return session;

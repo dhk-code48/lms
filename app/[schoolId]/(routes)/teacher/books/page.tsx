@@ -27,10 +27,10 @@ const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({ params }) =>
   return (
     <div className="space-y-10 w-full">
       <Heading title="Purchased Books" description="Purchased books with answer key and pdf" />
-      <div className="flex gap-10 w-full justify-center flex-wrap items-center">
+      <div className="flex gap-10 w-full justify-start flex-wrap items-center">
         {books &&
           books.map((book) => (
-            <Link href={`/${params.schoolId}/teacher/books/${book.id}`}>
+            <Link key={"books " + book.id} href={`/${params.schoolId}/teacher/books/${book.id}`}>
               <BookCard book={book} />
             </Link>
           ))}

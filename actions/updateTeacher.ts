@@ -3,12 +3,12 @@
 import prismadb from "@/lib/prismadb";
 import bcrypt from "bcryptjs";
 
-export const updateTeacher = async ({ id }: { id: string }) => {
+export const updateTeacher = async ({ id, loginDevice }: { id: string; loginDevice: string }) => {
   try {
     await prismadb.user.update({
       where: { id },
       data: {
-        loginDevice: id,
+        loginDevice,
       },
     });
   } catch (error) {
