@@ -22,7 +22,6 @@ export default async function HomePage() {
 
   return (
     <>
-      {" "}
       <HeroParallax header={<Header />} products={products} />{" "}
       {about && (
         <AboutStats
