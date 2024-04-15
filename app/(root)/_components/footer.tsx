@@ -11,7 +11,14 @@ const Footer = () => {
       <nav className="sm:ml-auto flex gap-4 sm:gap-6">
         <HoveredLink href="/">Home</HoveredLink>
         <HoveredLink href="/books">Books</HoveredLink>
-        <HoveredLink href="/about">About Us</HoveredLink>
+        <HoveredLink href="/about">About Us</HoveredLink>{" "}
+        <Link
+          className="dark:text-neutral-200 bg-transparent hover:bg-primary px-2 rounded-lg hover:font-semibold"
+          target="_blank"
+          href="https://swarnimpublication.com.np/document/1/download"
+        >
+          Catalogue
+        </Link>
       </nav>
     </footer>
   );

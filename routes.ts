@@ -10,6 +10,7 @@ export const publicRoutes = [
   "/api/loginRequests",
   "/books/",
   "/about",
+  "/catalogue",
   "/contact",
   "/auth/new-verification",
 ];

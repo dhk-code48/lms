@@ -12,7 +12,7 @@ export function Navbar({ className }: { className?: string }) {
       )}
     >
       <div className="flex container items-center justify-between">
-        <Logo />
+        <Logo lgSize={false} />
         <MobileSidebar />
         <NavbarLinks className="md:block hidden" />
       </div>
