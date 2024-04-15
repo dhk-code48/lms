@@ -5,8 +5,11 @@ import prismadb from "@/lib/prismadb";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { FC } from "react";
+import BookSearch from "./_components/book-search";
 
-const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({ params }) => {
+const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({
+  params,
+}) => {
   const session = await auth();
 
   if (!session) {
@@ -18,25 +21,18 @@ const TeacherBooks: FC<{ params: { schoolId: string } }> = async ({ params }) =>
 
   const books = await prismadb.book.findMany({
     where: {
-      schoolId: params.schoolId,
+      schoolId: process.env.NEXT_DEFAULT_SCHOOLID,
       categoryId: { in: session.user.categories },
     },
   });
 
   return (
     <div className="space-y-10">
-      <Heading title="All Books" description="All books with answer key and pdf" />
-      <div className="flex gap-10 flex-wrap">
-        {books &&
-          books.map((book) => (
-            <Link
-              key={"allbooks " + book.id}
-              href={`/${params.schoolId}/teacher/allBooks/${book.id}`}
-            >
-              <BookCard book={book} />
-            </Link>
-          ))}
-      </div>
+      <Heading
+        title="All Books"
+        description="All books with answer key and pdf"
+      />
+      <BookSearch schoolId={params.schoolId} />
     </div>
   );
 };

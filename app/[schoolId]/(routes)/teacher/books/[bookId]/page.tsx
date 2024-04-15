@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import React, { FC } from "react";
 import PDFViewer from "./_components/pdf-viewer";
 
-const TeacherBookInfo: FC<{ params: { bookId: string; schoolId: string } }> = async ({
-  params,
-}) => {
+const TeacherBookInfo: FC<{
+  params: { bookId: string; schoolId: string };
+}> = async ({ params }) => {
   const book = await prismadb.book.findUnique({
     where: {
       id: params.bookId,
@@ -25,7 +25,7 @@ const TeacherBookInfo: FC<{ params: { bookId: string; schoolId: string } }> = as
     <div className="space-y-10">
       <BookInfo book={book} />
 
-      <PDFViewer book={book} />
+      <PDFViewer book={book} premium={true} />
     </div>
   );
 };

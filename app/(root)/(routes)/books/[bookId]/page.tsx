@@ -1,3 +1,4 @@
+import PDFViewer from "@/app/[schoolId]/(routes)/teacher/books/[bookId]/_components/pdf-viewer";
 import BookInfo from "@/components/book-info";
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -23,20 +24,12 @@ const HomeBookPage = async ({ params }: { params: { bookId: string } }) => {
   return (
     <div className="container space-y-10">
       <BookInfo book={book} />
-      <Heading title="Available Pdf" description="Get the online soft copy of the book" />
-      <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-        <div className="bg-muted p-4 rounded-xl cursor-pointer hover:scale-105">
-          <h1 className="font-bold text-2xl">Book</h1>
-          <p className="mt-2 text-gray-500 font-semibold">
-            Login / Request Login to get access to all pdf
-          </p>
-        </div>
-        <div className="bg-muted p-4 rounded-xl cursor-pointer hover:scale-105">
-          <h1 className="font-bold text-2xl">Answer Key</h1>
-          <p className="mt-2 text-gray-500 font-semibold">
-            Login / Request Login to get access to all pdf
-          </p>
-        </div>
+      <Heading
+        title="Available Pdf"
+        description="Get the online soft copy of the book"
+      />
+      <div className="grid grid-cols-2 gap-x-6 gap-y-4 z-50">
+        <PDFViewer book={book} premium={false} />
       </div>
     </div>
   );
